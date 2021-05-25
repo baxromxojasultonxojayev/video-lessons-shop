@@ -2,6 +2,7 @@ const {Sequelize } = require ('sequelize');
 const CategoryModel = require('./models/Category.Model');
 const CourseModel = require('./models/CourseModel');
 const LessonModel = require('./models/LessonModel');
+const PaymentModel = require('./models/PaymentModel');
 const UserModel = require('./models/UserModel');
 
 
@@ -20,7 +21,7 @@ async function main(){
     db.categories = await CategoryModel(Sequelize, sequelize)
     db.courses = await CourseModel(Sequelize, sequelize)
     db.lessons = await LessonModel(Sequelize, sequelize)
-    db.paymnets = 
+    db.paymnets = await PaymentModel(Sequelize, sequelize)
 
     db.categories.hasMany(db.courses, {
       foreignKey: {
@@ -45,6 +46,20 @@ async function main(){
     db.lessons.belongsTo(db.courses, {
       foreignKey: {
         name: 'course_id',
+        allowNull: false
+      }
+    })
+
+    db.users.hasMany(db.courses, {
+      foreignKey: {
+        name: 'user_id',
+        allowNull: false
+      }
+    })
+
+    db.courses.belongsTo(db.users, {
+      foreignKey: {
+        name: 'user_id',
         allowNull: false
       }
     })
